@@ -8,7 +8,6 @@ import errorHandler from "./middlewares/errorHandler.js";
 import env from "./config/env.js";
 
 const app = express();
-app.use(errorHandler);
 
 app.use(
   cors({
@@ -16,13 +15,6 @@ app.use(
     credentials: true,
   }),
 );
-
-app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    message: "Route not found",
-  });
-});
 
 app.use(helmet());
 
@@ -40,5 +32,14 @@ app.get("/api/v1/health", (req, res) => {
     message: "Server is running successfully",
   });
 });
+
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: "Route not found",
+  });
+});
+
+app.use(errorHandler);
 
 export default app;
